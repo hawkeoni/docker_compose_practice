@@ -10,16 +10,11 @@ services:
       - database
 
   database:
-    # image: postgres
     build: ./database
     env_file: .env
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data/
-    # environment:
-    #   - POSTGRES_USER=root
-    #   - POSTGRES_PASSWORD=root
-    #   - POSTGRES_DB=root
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
 
 
-# volumes:
-#   postgres_data:
+volumes:
+  postgres_data:
