@@ -8,12 +8,27 @@ services:
       - "${CLASSIFIER_PORT}"
     depends_on:
       - database
+    # networks:
+    #   default:
+    #     ipv4_address: 172.22.0.4
 
   database:
     build: ./database
     env_file: .env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    # networks:
+    #   default:
+    #     ipv4_address: 172.22.0.5
+  
+  ground_truth_updater:
+    build: ./ground_truth_updater
+    env_file: .env
+    depends_on: 
+      - database
+    # networks:
+    #   default:
+    #     ipv4_address: 172.22.0.6
 
 
 volumes:

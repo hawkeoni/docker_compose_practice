@@ -7,7 +7,7 @@ import streamlit as st
 
 
 @st.experimental_singleton
-def get_connnection():
+def get_connection():
     return psycopg2.connect(
             host="database",
             user=os.environ["POSTGRES_USER"],
@@ -16,7 +16,8 @@ def get_connnection():
 
 
 @st.cache()
-def fetch_text(conn, tweet_id: str) -> Optional[Tuple[str, int]]:
+def fetch_text(tweet_id: str) -> Optional[Tuple[str, int]]:
+    conn = get_connection()
     if not tweet_id:
         return None
     cursor = conn.cursor()
@@ -30,7 +31,8 @@ def fetch_text(conn, tweet_id: str) -> Optional[Tuple[str, int]]:
     return text
 
 
-def update_ground_truth(conn, tweet: str, true_label: int):
+def update_ground_truth(tweet: str, true_label: int):
+    conn = get_connection()
     cursor = conn.cursor()
     query = dedent("""
     UPDATE twitter_data
@@ -42,21 +44,24 @@ def update_ground_truth(conn, tweet: str, true_label: int):
     cursor.close()
 
 
-conn = get_connnection()
-tweet_id = st.text_input("Please, write the tweet you want to label")
-tweet_text, true_label = fetch_text(conn, tweet_id)
-st.write(f"Current tweet:\n{tweet_text}\n\nTweet class: {true_label if true_label else 'None'}")
-class_input = st.text_input("Please, write the tweet class", )
-if tweet_text is None:
-    st.write("No tweet provided for markup")
-elif class_input in ["0", "1"]:
-    class_input = int(class_input)
-    update_ground_truth(conn, tweet_id, class_input)
-    st.write("Thank you for labeling the tweet")
-elif class_input is None:
-    st.write("The class must be either 0 or 1")
-else:
-    st.write("Please write down the class: 0 or 1")
+def main():
+    conn = get_connnection()
+    tweet_id = st.text_input("Please, write the tweet you want to label")
+    tweet_text, true_label = fetch_text(tweet_id)
+    if tweet_text is None:
+        st.write(f"No tweet found with id: {tweet_id}")
+        return
+    st.write(f"Current tweet:\n{tweet_text}\n\nTweet class: {true_label if true_label else 'None'}")
+    class_input = st.text_input("Please, write the tweet class", )
+    if class_input in ["0", "1"]:
+        class_input = int(class_input)
+        update_ground_truth(tweet_id, class_input)
+        st.write("Thank you for labeling the tweet")
+    elif class_input is None:
+        st.write("The class must be either 0 or 1")
+    else:
+        st.write("Please write down the class: 0 or 1")
 
-
+if __name__ == "__main__":
+    main()
 
