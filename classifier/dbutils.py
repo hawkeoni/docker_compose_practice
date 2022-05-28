@@ -55,17 +55,6 @@ def write_to_db(data: Dict[str, str], prediction: Dict[str, float]):
     cursor.close()
 
 
-def update_ground_truth(tweet: str, true_label: int):
-    conn = get_connection_from_env()
-    cursor = conn.cursor()
-    query = dedent("""
-    UPDATE twitter_data
-    SET true_label = %s
-    where tweet_id = %s
-    """)
-    cursor.execute(query, (true_label, tweet))
-    conn.commit()
-    cursor.close()
 
 
 def get_metrics() -> List[Tuple[int, int]]:
