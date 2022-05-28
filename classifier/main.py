@@ -13,8 +13,6 @@ conn = psycopg2.connect(
     user=os.environ["POSTGRES_USER"],
     password=os.environ["POSTGRES_PASSWORD"]
 )
-print(conn)
-
 
 def write_to_db(data, prediction):
     pass
