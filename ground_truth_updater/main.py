@@ -15,19 +15,20 @@ def get_connection():
         )
 
 
-@st.cache()
 def fetch_text(tweet_id: str) -> Optional[Tuple[str, int]]:
     conn = get_connection()
     if not tweet_id:
         return None
     cursor = conn.cursor()
     query = dedent("""
-    select text
-    from twitter_data, true_label
+    select text, true_label
+    from twitter_data
     where tweet_id = %s
     """)
-    cursor.execute(query, (tweet_id))
+    cursor.execute(query, (tweet_id, ))
     text = cursor.fetchone()
+    if text is None:
+        return None, None
     return text
 
 
@@ -45,19 +46,24 @@ def update_ground_truth(tweet: str, true_label: int):
 
 
 def main():
-    conn = get_connnection()
     tweet_id = st.text_input("Please, write the tweet you want to label")
+    if not tweet_id:
+        return
     tweet_text, true_label = fetch_text(tweet_id)
-    if tweet_text is None:
+    print(tweet_text)
+    print(true_label, true_label is None)
+    if not tweet_text:
         st.write(f"No tweet found with id: {tweet_id}")
         return
-    st.write(f"Current tweet:\n{tweet_text}\n\nTweet class: {true_label if true_label else 'None'}")
+    st.write("Current tweet:")
+    st.write(f"{tweet_text}")
+    st.write(f"Tweet class: {true_label if true_label is not None else 'None'}")
     class_input = st.text_input("Please, write the tweet class", )
     if class_input in ["0", "1"]:
         class_input = int(class_input)
         update_ground_truth(tweet_id, class_input)
         st.write("Thank you for labeling the tweet")
-    elif class_input is None:
+    elif class_input:
         st.write("The class must be either 0 or 1")
     else:
         st.write("Please write down the class: 0 or 1")
