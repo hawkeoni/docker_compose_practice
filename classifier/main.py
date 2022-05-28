@@ -1,6 +1,6 @@
-from argparse import ArgumentParser
-from multiprocessing.sharedctypes import Value
+import os
 
+import psycopg2
 from flask import Flask, jsonify, request
 
 from predictor import RandomPredictor
@@ -8,9 +8,15 @@ from predictor import RandomPredictor
 
 app = Flask(__name__)
 predictor = RandomPredictor()
+conn = psycopg2.connect(
+    host="database",
+    user=os.environ["POSTGRES_USER"],
+    password=os.environ["POSTGRES_PASSWORD"]
+)
+print(conn)
 
 
-def write_to_db(data):
+def write_to_db(data, prediction):
     pass
 
 
@@ -26,4 +32,7 @@ def inference():
 
 
 if __name__ == "__main__":
-    app.run()
+    # Could have used IPv6
+    port = int(os.environ.get("CLASSIFIER_PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
