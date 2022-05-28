@@ -29,6 +29,12 @@ services:
     # networks:
     #   default:
     #     ipv4_address: 172.22.0.6
+  
+  dashboard:
+    build: ./dashboard
+    env_file: .env
+    depends_on:
+      - database
 
 
 volumes:

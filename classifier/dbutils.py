@@ -17,6 +17,8 @@ __all__ = [
 def get_connection(host: str, user: str, password: str):
     return psycopg2.connect(host=host, user=user, password=password)
 
+
+# I can't really remember, why I did it...
 _CONNECTION = None
 def get_connection_from_env(reset: bool = False):
     global _CONNECTION
@@ -57,33 +59,5 @@ def write_to_db(data: Dict[str, str], prediction: Dict[str, float]):
 
 
 
-def get_metrics() -> List[Tuple[int, int]]:
-    conn = get_connection_from_env()
-    cursor = conn.cursor()
-    query = dedent("""
-    select predicted_class, true_label
-    from twitter_data
-    where true_label is not NULL
-    """)
-    cursor.execute(query)
-    # Here it is obvious that fetchall is expensive, so we'll have to cache it
-    # and recalculate only fresh stuff, where Time >= X
-    res = cursor.fetchall()
-    cursor.close()
-    return res
-
-
-def get_activity():
-    # we can use this to see general user activity
-    conn = get_connection_from_env()
-    cursor = conn.cursor()
-    query = dedent("""
-    select time, predicted_class
-    from twitter_data
-    """)
-    cursor.execute(query)
-    res = cursor.fetchall()
-    cursor.close()
-    return res
 
 
