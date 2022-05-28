@@ -10,6 +10,10 @@ app = Flask(__name__)
 predictor = RandomPredictor()
 
 
+def write_to_db(data):
+    pass
+
+
 @app.route("/inference", methods=["POST"])
 @app.errorhandler(ValueError)
 def inference():
@@ -17,6 +21,7 @@ def inference():
     if "text" not in data:
         return "Wrong request", 400
     prediction = predictor.predict(data)
+    write_to_db(data, prediction)
     return jsonify(prediction), 200
 
 
