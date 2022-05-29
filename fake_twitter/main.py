@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import random
@@ -17,5 +18,5 @@ class MyHandler(StreamRequestHandler):
 
 
 if __name__ == "__main__":
-    with ForkingTCPServer(("0.0.0.0", 7000), MyHandler) as server:
+    with ForkingTCPServer(("0.0.0.0", int(os.environ.get("FAKE_TWITTER_PORT", 7000))), MyHandler) as server:
         server.serve_forever()
