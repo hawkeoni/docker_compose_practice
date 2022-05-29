@@ -4,13 +4,16 @@ import random
 import socket
 import sys
 import time
+from typing import Dict, Any
+from textwrap import dedent
 
 import streamlit as st
+import requests
 
 
 def get_tweets():
-    # HOST, PORT = "fake_twitter", int(os.environ.get("FAKE_TWITTER_PORT", 7000))
-    HOST, PORT = "localhost", 7000
+    HOST, PORT = "fake_twitter", int(os.environ.get("FAKE_TWITTER_PORT", 7000))
+    # HOST, PORT = "localhost", 7000
     # Adding strings is bad
     cur_buffer = ""
 
@@ -25,7 +28,30 @@ def get_tweets():
                 yield tweet
 
 
-for tweet in get_tweets():
-    st.write(tweet)
+def get_prediction(tweet: Dict[str, Any]):
+    port = os.environ.get("CLASSIFIER_PORT", 5000)
+    resp = requests.post(f"http://classifier:{port}/inference", json=tweet)
+    prediction = resp.json()
+    return prediction
 
 
+def draw_tweet(tweet: Dict[str, Any]):
+    st.markdown(dedent(f"""
+    **Tweet ID**: {tweet["tweet_id"]}
+
+    **Author**: {tweet["username"]} {"Verified" if tweet["verified"] else ""}
+
+    {tweet["text"]}
+
+    **Text class**: {"Politics" if tweet["class"] else "Non-Political"}
+
+    ----
+    """))
+
+
+if __name__ == "__main__":
+    for tweet in get_tweets():
+        prediction = get_prediction(tweet)
+        tweet.update(prediction)
+        draw_tweet(tweet)
+        # st.write(tweet)
