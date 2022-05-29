@@ -20,7 +20,7 @@ class SklearnPredictor(Predictor):
         self.pipeline = pickle.load(open(load_path, "rb"))
 
     def predict(self, input: Dict[str, Any]) -> Dict[str, Any]:
-        prob = self.pipeline.predict_proba([input["text"]])[0][0]
+        prob = self.pipeline.predict_proba([input["text"]])[0][1]
         return {"prob": prob, "class": int(prob > 0.5)}
 
 

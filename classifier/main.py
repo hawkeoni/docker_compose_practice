@@ -2,11 +2,12 @@ import os
 
 from flask import Flask, jsonify, request
 
-from predictor import RandomPredictor, SklearnPredictor
+from predictor import SklearnPredictor
 from dbutils import write_to_db
 
 
 app = Flask(__name__)
+
 predictor = SklearnPredictor("/static/classifier.pkl")
 
 
