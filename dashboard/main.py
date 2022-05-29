@@ -35,7 +35,10 @@ def plot_confusion_matrix() -> List[Tuple[int, int]]:
     # Here it is obvious that fetchall is expensive, so we'll have to cache it
     # and recalculate only fresh stuff, where Time >= X
     res = cursor.fetchall()
-    y_pred, y_true = zip(*res)
+    if res:
+        y_pred, y_true = zip(*res)
+    else:
+        return
     cursor.close()
     matrix = confusion_matrix(y_true, y_pred)
     ax = sns.heatmap(matrix, cmap="magma", annot=True)
