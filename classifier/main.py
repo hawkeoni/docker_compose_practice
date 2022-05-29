@@ -17,6 +17,8 @@ def inference():
     if "text" not in data:
         return "Wrong request", 400
     prediction = predictor.predict(data)
+    # We can probably keep this in memory and 
+    # flush by time or by size
     write_to_db(data, prediction)
     return jsonify(prediction), 200
 

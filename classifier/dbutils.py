@@ -55,9 +55,3 @@ def write_to_db(data: Dict[str, str], prediction: Dict[str, float]):
     cursor.execute(query, data_tuple)
     conn.commit()
     cursor.close()
-
-
-
-
-
-

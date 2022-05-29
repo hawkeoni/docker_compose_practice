@@ -23,6 +23,10 @@ class SklearnPredictor(Predictor):
         raise NotImplemented(f".predict() not implemented for {self}")
 
 
+class CatboostPredictor(Predictor):
+    pass
+
+
 class BertPredictor(Predictor):
     
     def __init__(self, load_path: Union[str, Path]):

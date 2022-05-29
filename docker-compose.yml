@@ -35,6 +35,10 @@ services:
     env_file: .env
     depends_on:
       - database
+  
+  fake_twitter:
+    build: ./fake_twitter
+    
 
 
 volumes:
