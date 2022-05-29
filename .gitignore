@@ -1,4 +1,6 @@
 data
 __pycache__
 *.pkl
-.json
+*.json
+.ipynb_checkpoints
+*ipynb
