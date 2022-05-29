@@ -12,7 +12,7 @@ docker compose up
 ```
 We will be using default .env file for development from this repo. This is a dev version, files with real secrets should never be commited to a repo.
 
-3. Fake twitter client should be availiable in your browser at [localhost](http://localhost)
+3. Fake twitter client should be availiable in your browser at [localhost](http://localhost). Dashboard is available on port 8080 and ground truth updater on 8081.
 
 Enjoy your life-feed on Fake Twitter!
 

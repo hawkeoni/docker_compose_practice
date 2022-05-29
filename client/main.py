@@ -13,7 +13,6 @@ import streamlit as st
 
 def get_tweets():
     HOST, PORT = "fake_twitter", int(os.environ.get("FAKE_TWITTER_PORT", 7000))
-    # HOST, PORT = "localhost", 7000
     # Adding strings is bad
     cur_buffer = ""
 
@@ -39,6 +38,7 @@ def draw_tweet(tweet: Dict[str, Any]):
     st.markdown(
         dedent(
             f"""
+    
     **Tweet ID**: {tweet["tweet_id"]}
 
     **Author**: {tweet["username"]} {"Verified" if tweet["verified"] else ""}
@@ -58,4 +58,3 @@ if __name__ == "__main__":
         prediction = get_prediction(tweet)
         tweet.update(prediction)
         draw_tweet(tweet)
-        # st.write(tweet)
