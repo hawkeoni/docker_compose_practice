@@ -20,7 +20,6 @@ def get_connection():
     )
 
 
-@st.cache(ttl=60)
 def plot_confusion_matrix() -> List[Tuple[int, int]]:
     conn = get_connection()
     cursor = conn.cursor()
@@ -46,7 +45,6 @@ def plot_confusion_matrix() -> List[Tuple[int, int]]:
     st.pyplot(ax.figure, clear_figure=True)
 
 
-@st.cache(ttl=60)
 def plot_tweet_activity():
     # we can use this to see general user activity
     # we can also query the classes to see,
