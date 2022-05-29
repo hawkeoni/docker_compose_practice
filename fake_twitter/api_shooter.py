@@ -1,6 +1,7 @@
+from pprint import pprint
+
 import requests
 from utils import generate_fake_tweet
-from pprint import pprint
 
 fake_tweet = generate_fake_tweet()
 pprint(fake_tweet)

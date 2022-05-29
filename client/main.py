@@ -1,14 +1,14 @@
-import os
 import json
+import os
 import random
 import socket
 import sys
 import time
-from typing import Dict, Any
 from textwrap import dedent
+from typing import Any, Dict
 
-import streamlit as st
 import requests
+import streamlit as st
 
 
 def get_tweets():
@@ -36,7 +36,9 @@ def get_prediction(tweet: Dict[str, Any]):
 
 
 def draw_tweet(tweet: Dict[str, Any]):
-    st.markdown(dedent(f"""
+    st.markdown(
+        dedent(
+            f"""
     **Tweet ID**: {tweet["tweet_id"]}
 
     **Author**: {tweet["username"]} {"Verified" if tweet["verified"] else ""}
@@ -46,7 +48,9 @@ def draw_tweet(tweet: Dict[str, Any]):
     **Text class**: {"Politics" if tweet["class"] else "Non-Political"}
 
     ----
-    """))
+    """
+        )
+    )
 
 
 if __name__ == "__main__":

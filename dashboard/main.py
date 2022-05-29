@@ -1,13 +1,12 @@
 import os
-from textwrap import dedent
-from typing import Tuple, List
 from collections import Counter
+from textwrap import dedent
+from typing import List, Tuple
 
 import psycopg2
-import streamlit as st
 import seaborn as sns
+import streamlit as st
 from sklearn.metrics import confusion_matrix
-
 
 sns.set()
 
@@ -15,21 +14,23 @@ sns.set()
 @st.experimental_singleton
 def get_connection():
     return psycopg2.connect(
-            host="database",
-            user=os.environ["POSTGRES_USER"],
-            password=os.environ["POSTGRES_PASSWORD"]
-        )
+        host="database",
+        user=os.environ["POSTGRES_USER"],
+        password=os.environ["POSTGRES_PASSWORD"],
+    )
 
 
 @st.cache(ttl=60)
 def plot_confusion_matrix() -> List[Tuple[int, int]]:
     conn = get_connection()
     cursor = conn.cursor()
-    query = dedent("""
+    query = dedent(
+        """
     select predicted_class, true_label
     from twitter_data
     where true_label is not NULL
-    """)
+    """
+    )
     cursor.execute(query)
     # Here it is obvious that fetchall is expensive, so we'll have to cache it
     # and recalculate only fresh stuff, where Time >= X
@@ -49,11 +50,13 @@ def plot_tweet_activity():
     # what sort of activity are we having
     conn = get_connection()
     cursor = conn.cursor()
-    query = dedent("""
+    query = dedent(
+        """
     select time
     from twitter_data
     order by time ASC
-    """)
+    """
+    )
     cursor.execute(query)
     res = cursor.fetchall()
     cursor.close()
@@ -68,13 +71,12 @@ def plot_tweet_activity():
 
 def main():
     # Ideas for graphs - confusion matrix, percentage of political tweets, activity
-    # There are actually a lot of things to monitor: 
+    # There are actually a lot of things to monitor:
     # time of model inference and other hardware metrics
     # but this is neither the time nor the moment for this
     plot_confusion_matrix()
     plot_tweet_activity()
 
-    
 
 if __name__ == "__main__":
     main()
