@@ -48,3 +48,14 @@ A simple streamlit UI to update tweet class with ground_truth labels. True label
 # Data
 Data used for training was taken from https://www.kaggle.com/datasets/kaushiksuresh147/political-tweets?resource=download - tweets considered political
 https://www.kaggle.com/datasets/kazanova/sentiment140 - tweets from sentiment analysis corpus.
+
+Originally I wanted to scrape twitter API and check for words, but not all political tweets are political, here are some fun examples:
+
+```
+Stranger: Where are you from? You: Moscow, Russia. Stranger: Hello comrade Stranger: Give my regards to Putin  ? ??? ????? Omegle 
+
+Going to Jon Corzine's campaign kick off with Joe Biden tomorrow  SO excited
+
+Excited about seeing World Press Photo exhibition when it comes to the United Nations this July! 
+```
+Unfortunately, the datasets I used were nonetheless connected in the same manner.
