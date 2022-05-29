@@ -17,14 +17,11 @@ class Predictor:
 class SklearnPredictor(Predictor):
     
     def __init__(self, load_path: Union[str, Path]):
-        pass
+        self.pipeline = pickle.load(open(load_path, "rb"))
 
     def predict(self, input: Dict[str, Any]) -> Dict[str, Any]:
-        raise NotImplemented(f".predict() not implemented for {self}")
-
-
-class CatboostPredictor(Predictor):
-    pass
+        prob = self.pipeline.predict_proba([input["text"]])[0][0]
+        return {"prob": prob, "class": int(prob > 0.5)}
 
 
 class BertPredictor(Predictor):
