@@ -1,5 +1,5 @@
 # Tweet classifier microservice demo
-Test task for OpenWeb.
+A small playground for training to use docker compose.
 
 ## Launch
 To launch:
