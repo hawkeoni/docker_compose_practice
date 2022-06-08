@@ -1,4 +1,4 @@
-# OpenWeb Test Task
+# Tweet classifier microservice demo
 Test task for OpenWeb.
 
 ## Launch
